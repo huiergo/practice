@@ -1,0 +1,73 @@
+单线程模式原因： DOM操作
+指的是：js执行环境中负责执行代码的线程只有一个
+
+同步模式与异步模式
+事件循环与消息队列
+异步编程的几种方式
+Promise异步方案，宏任务 / 微任务队列
+Generator异步方案， async / await 语法糖
+
+函子（Functor）：
+是一个特殊的容器，通过一个普通的对象来实现，该对象具有map方法，map方法可以运行一个函数对值进行处理（变形关系）
+包含值和值的变形关系
+把副作用控制在可控的范围内，异常处理，异步操作等。
+
+
+简答题：
+1、如何理解JS异步编程的？(EventLoop， 消息队列是做什么的， 宏任务，微任务)
+js是单线程模式，但是异步编程主要是把一些耗时的放在异步里面，等主线程的东西执行完成后，执行异步队列里面的，然后会依次放入到eventLoop ，然后再放回到主线程里面。
+代码题：
+1、
+let promise = new Promise((resolve, reject) => resolve());
+
+promise
+  .then(() => {
+    var a = "hello";
+    return a;
+  })
+  .then(result => {
+    var b = "lagou";
+    return result + b;
+  })
+  .then(result => {
+    var c = "i love ";
+    return result + c;
+  })
+  .catch(e => {
+    console.log(e);
+  });
+
+2、
+const f1 = fp.flowRight(fp.property("in_stock"), fp.last);
+console.log(f1(cars));
+
+const f2 = fp.flowRight(fp.property("name"), fp.first);
+console.log(f2(cars));
+
+3、
+let _average = function(xs) {
+  return fp.reduce(fp.add, 0, xs) / xs.length;
+};
+let _getDollars = arr => arr.map(i => fp.property("dollar")(i));
+console.log(_getDollars(cars));
+const f3 = fp.flowRight(_average, _getDollars);
+console.log(f3(cars));
+
+4、
+let _underscore = fp.replace(/\W+/g, "_");
+const snitizeNames = fp.flowRight(_underscore, fp.toLower);
+console.log(snitizeNames("Hello world"));
+
+
+练习2：
+console.log(Maybe.of([5, 6, 1]).map(fp.first));
+练习3：
+let ex3 = () => {
+  Maybe.of(user)
+    .map(safeProp("name"))
+    .map(fp.lowerFirst);
+};
+练习4：
+let ex4 = function(n) {
+  Maybe.of(n).map(parseInt);
+};
